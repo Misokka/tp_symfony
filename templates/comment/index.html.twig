@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment Index
+{% endblock %}
+
+{% block body %}
+	<div class="flex justify-center items-center min-h-screen bg-gray-100">
+		<div class="bg-white shadow-md rounded p-8 w-full max-w-4xl">
+			<h1 class="text-2xl font-bold mb-6 text-gray-700">Liste de commentaires</h1>
+			<table class="table-auto w-full border-collapse border border-gray-300">
+				<thead>
+					<tr class="bg-gray-200 text-gray-700">
+						<th class="border px-4 py-2">Numéro</th>
+						<th class="border px-4 py-2">Contenu</th>
+						<th class="border px-4 py-2">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for comment in comments %}
+						<tr class="text-gray-700">
+							<td class="border px-4 py-2">{{ comment.id }}</td>
+							<td class="border px-4 py-2">{{ comment.content }}</td>
+							<td class="border px-4 py-2 flex justify-center space-x-2">
+								<a href="{{ path('app_comment_show', {'id': comment.id}) }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Voir</a>
+								<a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700">Modifier</a>
+
+								<form action="{{ path('app_comment_delete', {'id': comment.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+									<button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="3" class="border px-4 py-2 text-center text-gray-500">No records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+

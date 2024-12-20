@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment Details
+{% endblock %}
+
+{% block body %}
+	<div class="flex justify-center items-center min-h-screen bg-gray-100">
+		<div class="bg-white shadow-md rounded p-8 w-full max-w-2xl">
+			<h1 class="text-2xl font-bold mb-4 text-gray-700">Détail du commentaire</h1>
+			<div class="mb-4">
+				<table class="w-full text-left border-collapse">
+					<tbody>
+						<tr>
+							<th class="border-b py-2 text-gray-600">Numéro</th>
+							<td class="border-b py-2 text-gray-800">{{ comment.id }}</td>
+						</tr>
+						<tr>
+							<th class="border-b py-2 text-gray-600">Contenu</th>
+							<td class="border-b py-2 text-gray-800">{{ comment.content }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="flex justify-between">
+				<a href="{{ path('app_comment_index') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Retour a la liste</a>
+				<a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Modifier</a>
+			</div>
+			<div class="mt-4">
+				{{ include('comment/_delete_form.html.twig') }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

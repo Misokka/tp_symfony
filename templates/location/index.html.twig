@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Location Index
+{% endblock %}
+
+{% block body %}
+	<div class="flex justify-center items-center min-h-screen bg-gray-100">
+		<div class="bg-white shadow-md rounded p-8 w-full max-w-4xl">
+			<h1 class="text-2xl font-bold mb-6 text-gray-700">Liste de lieux</h1>
+			<table class="table-auto w-full border-collapse border border-gray-300">
+				<thead>
+					<tr class="bg-gray-200 text-gray-700">
+						<th class="border px-4 py-2">Numéro</th>
+						<th class="border px-4 py-2">Nom</th>
+						<th class="border px-4 py-2">Adresse</th>
+						<th class="border px-4 py-2">Ville</th>
+						<th class="border px-4 py-2">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for location in locations %}
+						<tr class="text-gray-700">
+							<td class="border px-4 py-2">{{ location.id }}</td>
+							<td class="border px-4 py-2">{{ location.name }}</td>
+							<td class="border px-4 py-2">{{ location.address }}</td>
+							<td class="border px-4 py-2">{{ location.city }}</td>
+							<td class="border px-4 py-2 flex justify-center space-x-2">
+								<a href="{{ path('app_location_show', {'id': location.id}) }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Voir</a>
+								<a href="{{ path('app_location_edit', {'id': location.id}) }}" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700">Modifier</a>
+
+								<form action="{{ path('app_location_delete', {'id': location.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ location.id) }}">
+									<button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="border px-4 py-2 text-center text-gray-500">No records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="mt-6">
+				<a href="{{ path('app_location_new') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Créer un nouveau lieu</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

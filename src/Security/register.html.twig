@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="bg-white shadow-md rounded p-8 w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-6 text-gray-700">Inscription</h1>
+
+        {{ form_start(registrationForm, { 'attr': { 'class': 'space-y-6' } }) }}
+        <div class="space-y-4">
+            {% for field in registrationForm %}
+                <div>
+                    {{ form_label(field, null, { 'label_attr': { 'class': 'block text-sm font-medium text-gray-700' } }) }}
+                    {{ form_widget(field, { 'attr': { 'class': 'mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500' } }) }}
+                    {{ form_errors(field) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div>
+            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                S'inscrire
+            </button>
+        </div>
+        {{ form_end(registrationForm) }}
+
+        <div class="mt-4 text-center">
+            <a href="{{ path('app_login') }}" class="text-blue-500 hover:underline">
+                Déjà un compte ? Connectez-vous
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

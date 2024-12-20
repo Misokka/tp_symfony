@@ -1,17 +1,94 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome{% endblock %}</title>
-        {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
-        {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+			<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+			<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet"/>
+		{% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap('app') }}
+			{% endblock %}
+			<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+		{% endblock %}
+	</head>
+	<body class="bg-gray-100 min-h-screen flex flex-col">
+		<header class="bg-white shadow-md px-8 py-4 flex items-center">
+			<h1 class="text-2xl font-bold text-gray-700 flex-grow">EventApp</h1>
+
+			<nav class="flex space-x-4">
+				<a href="{{ path('app_home') }}" class="px-4 py-2 rounded font-medium transition {{ app.request.get('_route') == 'app_home' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-100' }}">
+					Accueil
+				</a>
+				{% if app.user %}
+					<a href="{{ path('app_event_index') }}" class="px-4 py-2 rounded font-medium transition {{ app.request.get('_route') == 'app_event_index' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-100' }}">
+						Événements
+					</a>
+					<a href="{{ path('app_location_index') }}" class="px-4 py-2 rounded font-medium transition {{ app.request.get('_route') == 'app_location_index' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-100' }}">
+						Lieux
+					</a>
+					<a href="{{ path('app_activity_index') }}" class="px-4 py-2 rounded font-medium transition {{ app.request.get('_route') == 'app_activity_index' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-100' }}">
+						Activités
+					</a>
+					<a href="{{ path('app_comment_index') }}" class="px-4 py-2 rounded font-medium transition {{ app.request.get('_route') == 'app_comment_index' ? 'bg-blue-600 text-white' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-100' }}">
+						Commentaires
+					</a>
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('app_user_index') }}" class="px-4 py-2 rounded font-medium bg-green-600 text-white hover:bg-green-700 transition">
+							Utilisateurs
+						</a>
+					{% endif %}
+
+				{% endif %}
+
+				{% if app.user %}
+					<a href="{{ path('app_user_profile') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+						Mon Profil
+					</a>
+				{% endif %}
+
+			</nav>
+
+			<div class="ml-4">
+				{% if app.user %}
+					<form action="{{ path('app_logout') }}" method="post" class="inline">
+						<button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md transition focus:outline-none focus:ring-2 focus:ring-red-500">
+							Déconnexion
+						</button>
+					</form>
+				{% else %}
+					<a href="{{ path('app_login') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2">
+						Connexion
+					</a>
+					<a href="{{ path('app_register') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded shadow-md transition focus:outline-none focus:ring-2 focus:ring-yellow-400 ml-2">
+						Inscription
+					</a>
+				{% endif %}
+			</div>
+		</header>
+
+		<main class="flex-grow flex flex-col items-center justify-center">
+			{% for label, messages in app.flashes %}
+				<div class="bg-{{ label == 'success' ? 'green' : (label == 'error' ? 'red' : 'blue') }}-100 border border-{{ label }}-400 text-{{ label }}-700 px-4 py-3 rounded relative mb-4">
+					{% for message in messages %}
+						<span class="block sm:inline">{{ message }}</span>
+					{% endfor %}
+				</div>
+			{% endfor %}
+			{% block body %}{% endblock %}
+		</main>
+
+		<footer class="bg-white shadow-inner px-8 py-4 text-center text-gray-500">
+			&copy;
+			{{ "now"|date("Y") }}
+			EventApp
+		</footer>
+	</body>
 </html>
+

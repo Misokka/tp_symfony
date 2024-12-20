@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}profile
+{% endblock %}
+
+{% block body %}
+	<div class="container mx-auto px-4 py-10">
+		<div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-6">
+			<h1 class="text-3xl font-bold text-gray-700 mb-6">Mon Profil</h1>
+
+			<div class="mb-6">
+				<p class="text-gray-600 mb-2">
+					<strong>Prénom :</strong>
+					{{ app.user.firstName }}</p>
+				<p class="text-gray-600 mb-2">
+					<strong>Nom :</strong>
+					{{ app.user.lastName }}</p>
+				<p class="text-gray-600 mb-2">
+					<strong>Email :</strong>
+					{{ app.user.email }}</p>
+				<p class="text-gray-600">
+					<strong>Rôle :</strong>
+					{{ app.user.roles|join(', ') }}</p>
+			</div>
+
+			<div class="flex justify-between items-center">
+				<a href="{{ path('app_user_edit', {id: app.user.id}) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md">
+					Modifier mes informations
+				</a>
+
+				<form action="{{ path('app_user_delete', {id: app.user.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
+					<button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md">
+						Supprimer mon compte
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

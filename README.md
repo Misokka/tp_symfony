@@ -1,51 +1,63 @@
-# Symfony Docker
+# EventApp
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
-
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
-
-## Getting Started
-
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --no-cache` to build fresh images
-3. Run `docker compose up --pull always -d --wait` to set up and start a fresh Symfony project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+EventApp is a web application designed to manage events with locations, activities, and comments. The application supports CRUD operations for events, activities, users, locations, and comments. It also includes user authentication with different roles (Admin, User, Banned) and dynamic content based on user roles and login status.
 
 ## Features
 
-* Production, development and CI ready
-* Just 1 service by default
-* Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-* [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-* Automatic HTTPS (in dev and prod)
-* HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-* Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-* [Vulcain](https://vulcain.rocks) support
-* Native [XDebug](docs/xdebug.md) integration
-* Super-readable configuration
+- CRUD operations for events, activities, users, locations, and comments
+- User authentication (login, register, password reset)
+- Three different user roles (Admin, User, Banned)
+- Dynamic content based on user roles:
+    - If **ADMIN**, display a button to access the admin panel
+    - If **USER**, display a button to access the user profile
+    - If **BANNED**, display a message indicating the user is banned and hide other pages
+- Dynamic content based on login status:
+    - If logged in, display the user's name and surname
+    - If not logged in, display a login button
+    - If logged in, display a logout button
+- Search and filter system
+- Admin-specific features:
+    - Display a button to access the list of users
 
-**Enjoy!**
+## Getting Started
 
-## Docs
+To get started with EventApp, follow these steps:
 
-1. [Options available](docs/options.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using MySQL instead of PostgreSQL](docs/mysql.md)
-8. [Using Alpine Linux instead of Debian](docs/alpine.md)
-9. [Using a Makefile](docs/makefile.md)
-10. [Updating the template](docs/updating.md)
-11. [Troubleshooting](docs/troubleshooting.md)
+1. Clone the repository:
 
-## License
+git clone <repository-url>
 
-Symfony Docker is available under the MIT License.
+2. Build and start the Docker containers:
 
-## Credits
+docker compose --build -d
 
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+3. Connect to the PHP container:
+
+docker ps
+docker exec -it <php-container-id> bash
+
+4. Inside the PHP container, run the following commands:
+
+php bin/console tailwind:build --watch
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+
+5. When prompted, type `yes` and press Enter to load the fixtures.
+
+The project is now set up. You can explore the site using the following user accounts:
+
+### User account:
+
+- **Email:** user1@example.com
+- **Password:** userpass
+
+### Admin account:
+
+- **Email:** admin@example.com
+- **Password:** adminpass
+
+### Banned account:
+
+- **Email:** banned@example.com
+- **Password:** bannedpass

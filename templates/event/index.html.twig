@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event Index
+{% endblock %}
+
+{% block body %}
+	<div class="flex justify-center items-center min-h-screen bg-gray-100">
+		<div class="bg-white shadow-md rounded p-8 w-full max-w-4xl">
+			<h1 class="text-2xl font-bold mb-6 text-gray-700">Liste d'evenement</h1>
+			<table class="table-auto w-full border-collapse border border-gray-300">
+				<thead>
+					<tr class="bg-gray-200 text-gray-700">
+						<th class="border px-4 py-2">Id</th>
+						<th class="border px-4 py-2">Nom</th>
+						<th class="border px-4 py-2">Description</th>
+						<th class="border px-4 py-2">Date</th>
+						<th class="border px-4 py-2">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for event in events %}
+						<tr class="text-gray-700">
+							<td class="border px-4 py-2">{{ event.id }}</td>
+							<td class="border px-4 py-2">{{ event.name }}</td>
+							<td class="border px-4 py-2">{{ event.description }}</td>
+							<td class="border px-4 py-2">{{ event.date ? event.date|date('Y-m-d H:i:s') : '' }}</td>
+							<td class="border px-4 py-2 flex justify-center space-x-2">
+								<a href="{{ path('app_event_show', {'id': event.id}) }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Voir</a>
+								<a href="{{ path('app_event_edit', {'id': event.id}) }}" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700">Modifier</a>
+
+								<form action="{{ path('app_event_delete', {'id': event.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+									<button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="border px-4 py-2 text-center text-gray-500">No records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="mt-6">
+				<a href="{{ path('app_event_new') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Créer un nouvel Evennement</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

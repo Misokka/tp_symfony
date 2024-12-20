@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Utilisateur
+{% endblock %}
+
+{% block body %}
+	<div class="flex justify-center items-center min-h-screen bg-gray-100">
+		<div class="bg-white shadow-lg rounded-lg p-8 max-w-2xl">
+			<h1 class="text-3xl font-bold text-gray-700 mb-6">Espace Utilisateur</h1>
+			<p class="text-gray-600 mb-4">
+				Bienvenue dans votre espace personnel. Vous pouvez gérer vos événements et activités ici.
+			</p>
+			<ul class="list-disc pl-6 text-gray-600">
+				<li>
+					<a href="{{ path('app_event_index') }}" class="text-blue-500 hover:underline">Mes événements</a>
+				</li>
+				<li>
+					<a href="{{ path('app_location_index') }}" class="text-blue-500 hover:underline">Mes lieux</a>
+				</li>
+				<li>
+					<a href="{{ path('app_activity_index') }}" class="text-blue-500 hover:underline">Mes activités</a>
+				</li>
+				<li>
+					<a href="{{ path('app_comment_index') }}" class="text-blue-500 hover:underline">Mes commentaires</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+{% endblock %}
+
